@@ -14,3 +14,6 @@ The prediction algorithm is embebbed in the App and so the User only needs to ch
 
 Once the User has chosen values for the variables Agriculture and Education other than the default and has submitted them, the predicted value for fertility is displayed as a red dot in the figure. The graphic is a scatterplot for the fertility (y-axis), education (x-axis) and agriculture (included through colour) data from the swiss dataset. It also includes a smooth-line for the model fit. 
 
+The R-Code used to create this Shiny-App can be found in GitHub under this link:
+https://github.com/alatriste65/DevelopingDataProducts_FinalProject
+

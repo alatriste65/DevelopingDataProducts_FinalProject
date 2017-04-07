@@ -10,8 +10,8 @@ shinyUI(
         # Sidebar with a slider input for number of bins 
         sidebarLayout(
           sidebarPanel(
-             sliderInput("sliderAgri","What is the percentage of males in the region involved in agriculture as occupation?",1,100,value=50),
              sliderInput("sliderEdu","What percentage of draftees in the region have education beyond primary school?",1,60,value=11),
+             sliderInput("sliderCath","What is the percentage of catholic?",1,100,value=41),
              submitButton("Submit")
           ),
           

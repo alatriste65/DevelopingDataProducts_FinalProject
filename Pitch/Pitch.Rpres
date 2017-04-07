@@ -1,0 +1,47 @@
+Predicting Fertility in XIX
+========================================================
+author: alatriste65
+date: 07/04/2017
+width: 1440
+height: 950
+
+Goal and Usage
+========================================================
+The App includes a prediction model for fertility based on swiss socio-economic indicators from end of XIX.
+Instructions for usage can be found in the Tab "Instructions".
+
+The prediction algorithm is embebbed in the App and so the User only needs to choose the values of Education and Catholic for which he wishes to obtain a fertility prediction for a swiss region in the XIX century. The user can choose the desired values interactivily through the respective sidebars in the "Prediction" Tab. The default values are 11% for the variable education and 41% for the variable catholic. 
+
+The predicted fertility given input values for Education and Catholic will be displayed in the figure as red dot. 
+
+
+Data
+========================================================
+The prediction algorithm is based on the "swiss" dataset, which includes fertility measures and socio-economic indicators for each of 47 French-speaking provinces in Switzerland. 
+```{r,echo=TRUE}
+data(swiss)
+str(swiss)
+```
+
+The model
+========================================================
+The model has been estimated using the lm method and has two regressors:
+- Education represents the percentage of draftees with education beyond primary school
+- Catholic: represents the percentage of catholics in the region
+```{r,echo=FALSE,eval=TRUE}
+model_fert<-lm(Fertility~Education+Catholic,data=swiss)
+summary(model_fert)
+```
+
+The prediction
+========================================================
+The data used for fitting the model is displayed in a figure. The graphic is a scatterplot for the fertility (y-axis), education (x-axis) and catholic (included through colour) data from the swiss dataset. It also includes a smooth-line for the model fit. The figure also includes the predicted fertility indicator given the input values for education and catholic.
+
+```{r,echo=FALSE,eval=TRUE,fig.width=12}
+modfit<- predict(model_fert,newdata=data.frame(Education=swiss$Education,Catholic=swiss$Catholic))
+swiss$modfit <- modfit
+library(ggplot2)     
+ggplot(swiss,aes(x=Education,y=Fertility))+xlim(1,60)+geom_point(aes(color=Catholic))+xlab("Education")+ylab("Fertility")+ggtitle("Prediction Model for Fertility")+geom_smooth(data=swiss,aes(x=Education,y=modfit),se=FALSE,stat="smooth")+geom_point(aes(x=11,y=predict(model_fert,newdata=data.frame(Education=11,Catholic=41))),color="red",size=4)
+```
+
+

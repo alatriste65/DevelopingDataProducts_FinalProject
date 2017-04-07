@@ -13,21 +13,21 @@ library(shiny)
 shinyServer(function(input, output) {
    data(swiss)
    library(ggplot2)
-   model_fert <- lm(Fertility~Agriculture+Education,data=swiss)
+   model_fert <- lm(Fertility~Education+Catholic,data=swiss)
    
    model_fert_pred <- reactive({
-     AgriInput <- input$sliderAgri
      EduInput <- input$sliderEdu
-     predict(model_fert,newdata=data.frame(Agriculture=AgriInput,Education=EduInput))
+     CathInput <- input$sliderCath
+     predict(model_fert,newdata=data.frame(Education=EduInput,Catholic=CathInput))
    })
    
    output$plotfert <- renderPlot({
-     AgriInput <- input$sliderAgri
      EduInput <- input$sliderEdu
-     modfit<- predict(model_fert,newdata=data.frame(Agriculture=swiss$Agriculture,Education=swiss$Education))
+     CathInput <- input$sliderCath
+     modfit<- predict(model_fert,newdata=data.frame(Education=swiss$Education,Catholic=swiss$Catholic))
      swiss$modfit <- modfit
      
-     ggplot(swiss,aes(x=Education,y=Fertility))+xlim(1,60)+geom_point(aes(color=Agriculture))+xlab("Education")+ylab("Fertility")+ggtitle("Prediction Model for Fertility")+geom_smooth(data=swiss,aes(x=Education,y=modfit),se=FALSE,stat="smooth")+geom_point(aes(x=EduInput,y=model_fert_pred()),color="red",size=5)
+     ggplot(swiss,aes(x=Education,y=Fertility))+xlim(1,60)+geom_point(aes(color=Catholic))+xlab("Education")+ylab("Fertility")+ggtitle("Prediction Model for Fertility")+geom_smooth(data=swiss,aes(x=Education,y=modfit),se=FALSE,stat="smooth")+geom_point(aes(x=EduInput,y=model_fert_pred()),color="red",size=4)
    })
    
    output$predfert <- renderText({
